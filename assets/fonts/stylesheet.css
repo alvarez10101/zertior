@@ -1,0 +1,104 @@
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-Bold.eot');
+    src: local('DAZN Oscine Bold'), local('DAZNOscine-Bold'),
+        url('DAZNOscine-Bold.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-Bold.woff2') format('woff2'),
+        url('DAZNOscine-Bold.woff') format('woff'),
+        url('DAZNOscine-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-Light.eot');
+    src: local('DAZN Oscine Light Regular'), local('DAZNOscine-Light'),
+        url('DAZNOscine-Light.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-Light.woff2') format('woff2'),
+        url('DAZNOscine-Light.woff') format('woff'),
+        url('DAZNOscine-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-BoldItalic.eot');
+    src: local('DAZN Oscine Bold Italic'), local('DAZNOscine-BoldItalic'),
+        url('DAZNOscine-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-BoldItalic.woff2') format('woff2'),
+        url('DAZNOscine-BoldItalic.woff') format('woff'),
+        url('DAZNOscine-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine XBold';
+    src: url('DAZNOscine-XBoldItalic.eot');
+    src: local('DAZN Oscine XBold Italic'), local('DAZNOscine-XBoldItalic'),
+        url('DAZNOscine-XBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-XBoldItalic.woff2') format('woff2'),
+        url('DAZNOscine-XBoldItalic.woff') format('woff'),
+        url('DAZNOscine-XBoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-Italic.eot');
+    src: local('DAZN Oscine Italic'), local('DAZNOscine-Italic'),
+        url('DAZNOscine-Italic.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-Italic.woff2') format('woff2'),
+        url('DAZNOscine-Italic.woff') format('woff'),
+        url('DAZNOscine-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-LightItalic.eot');
+    src: local('DAZN Oscine Light Italic'), local('DAZNOscine-LightItalic'),
+        url('DAZNOscine-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-LightItalic.woff2') format('woff2'),
+        url('DAZNOscine-LightItalic.woff') format('woff'),
+        url('DAZNOscine-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine XBold';
+    src: url('DAZNOscine-XBold.eot');
+    src: local('DAZN Oscine XBold'), local('DAZNOscine-XBold'),
+        url('DAZNOscine-XBold.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-XBold.woff2') format('woff2'),
+        url('DAZNOscine-XBold.woff') format('woff'),
+        url('DAZNOscine-XBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DAZN Oscine';
+    src: url('DAZNOscine-Regular.eot');
+    src: local('DAZN Oscine'), local('DAZNOscine-Regular'),
+        url('DAZNOscine-Regular.eot?#iefix') format('embedded-opentype'),
+        url('DAZNOscine-Regular.woff2') format('woff2'),
+        url('DAZNOscine-Regular.woff') format('woff'),
+        url('DAZNOscine-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
