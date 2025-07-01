@@ -9,25 +9,57 @@ import { styles } from '../../styles/styles';
 
 const { width } = Dimensions.get('window');
 
-const SlideItem = ({ item }) => {
+const SlideItem = ({ item, isActive, slideIndex }) => {
   const isVideo = item.type === 'video' && item.uri;
   const [isMuted, setIsMuted] = useState(true);
+  const [playerReady, setPlayerReady] = useState(false);
+  const playerRef = useRef(null);
+  const lastPosition = useRef(0);
+
+  const isLocalVideo = typeof item.uri === 'number';
 
   const player = useVideoPlayer(
     isVideo ? item.uri : null,
     (pl) => {
       if (pl) {
         pl.loop = true;
-        pl.play();
+        playerRef.current = pl;
+        setPlayerReady(true);
+
+        if (isLocalVideo && isActive) {
+          if (lastPosition.current > 0) {
+            pl.currentTime = lastPosition.current;
+          }
+          setTimeout(() => pl.play(), 100);
+        } else {
+          pl.pause();
+        }
       }
     }
   );
 
   useEffect(() => {
-    if (player) {
-      player.muted = isMuted;
+    if (playerRef.current && playerReady && isVideo) {
+      if (isActive) {
+        if (isLocalVideo && slideIndex === 0) {
+          playerRef.current.play();
+        } else {
+          playerRef.current.play();
+        }
+      } else {
+        if (isLocalVideo && slideIndex === 0 && playerRef.current.currentTime) {
+          lastPosition.current = playerRef.current.currentTime;
+        }
+        playerRef.current.pause();
+      }
     }
-  }, [isMuted, player]);
+  }, [isActive, playerReady, isVideo, slideIndex, isLocalVideo]);
+
+  useEffect(() => {
+    if (playerRef.current && playerReady) {
+      playerRef.current.muted = isMuted;
+    }
+  }, [isMuted, playerReady]);
 
   if (isVideo) {
     return (
@@ -74,15 +106,27 @@ const MainSlider = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const isChangingSlide = useRef(false);
 
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setActiveSlide(viewableItems[0].index || 0);
+    if (viewableItems.length > 0 && !isChangingSlide.current) {
+      const newActiveSlide = viewableItems[0].index || 0;
+
+      if (newActiveSlide !== activeSlide) {
+        isChangingSlide.current = true;
+        setActiveSlide(newActiveSlide);
+
+        setTimeout(() => {
+          isChangingSlide.current = false;
+        }, 200);
+      }
     }
   }).current;
 
   const viewabilityConfig = useRef({
-    viewAreaCoveragePercentThreshold: 50
+    viewAreaCoveragePercentThreshold: 50,
+    minimumViewTime: 100,
+    waitForInteraction: false
   }).current;
 
   return (
@@ -94,15 +138,28 @@ const MainSlider = () => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <SlideItem item={item} />}
+        renderItem={({ item, index }) => (
+          <SlideItem
+            item={item}
+            isActive={index === activeSlide}
+            slideIndex={index}
+          />
+        )}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}
+        onMomentumScrollEnd={(event) => {
+          const slideIndex = Math.round(event.nativeEvent.contentOffset.x / width);
+
+          if (slideIndex !== activeSlide && slideIndex >= 0 && slideIndex < sliderData.length) {
+            setActiveSlide(slideIndex);
+          }
+        }}
         scrollEventThrottle={16}
         viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={onViewableItemsChanged}
-        initialNumToRender={1}
+        initialNumToRender={3}
         maxToRenderPerBatch={1}
         windowSize={3}
         removeClippedSubviews={false}
