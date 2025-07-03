@@ -1,110 +1,325 @@
-// components/common/SideMenu.js
-import React, { useRef } from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
-import { styles } from '../../styles/styles';
-import MenuFooter from './MenuFooter';
-import MenuHeader from './MenuHeader';
-import MenuItems from './MenuItems';
+// components/common/SideMenu.js - CON TUS COLORES DEFINIDOS
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors } from '../../constants/colors';
 
-const SideMenu = () => {
-  const menuAnimation = useRef(new Animated.Value(300)).current;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
-  const menuRef = useRef(null);
-  const overlayRef = useRef(null);
+const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
+  const insets = useSafeAreaInsets();
 
-  const openMenu = () => {
-    // Hacer visible el menú
-    if (menuRef.current) {
-      menuRef.current.setNativeProps({ pointerEvents: 'auto' });
+  // ✅ Configuración de menú con TUS COLORES CONSISTENTES
+  const menuSections = [
+    {
+      title: "Principal",
+      items: [
+        {
+          id: 'live',
+          title: 'Partidos EN VIVO',
+          subtitle: '3 partidos activos',
+          icon: '🔴',
+          color: colors.live, // ✅ Rojo de tu paleta
+          badge: '3',
+          onPress: () => onNavigate('live')
+        },
+        {
+          id: 'favorites',
+          title: 'Mis Favoritos',
+          subtitle: 'Equipos seguidos',
+          icon: '⭐',
+          color: colors.accent, // ✅ Dorado de tu paleta
+          onPress: () => onNavigate('favorites')
+        }
+      ]
+    },
+    {
+      title: "Configuración",
+      items: [
+        {
+          id: 'notifications',
+          title: 'Notificaciones',
+          subtitle: '5 nuevas',
+          icon: '🔔',
+          color: colors.accent, // ✅ Dorado de tu paleta
+          badge: '5',
+          onPress: () => onNavigate('notifications')
+        },
+        {
+          id: 'settings',
+          title: 'Configuración',
+          subtitle: 'Ajustes de la app',
+          icon: '⚙️',
+          color: colors.textMuted, // ✅ Gris de tu paleta
+          onPress: () => onNavigate('settings')
+        }
+      ]
+    },
+    {
+      title: "Soporte",
+      items: [
+        {
+          id: 'help',
+          title: 'Ayuda',
+          subtitle: 'Soporte técnico',
+          icon: '❓',
+          color: colors.textMuted, // ✅ Gris de tu paleta
+          onPress: () => onNavigate('help')
+        },
+        {
+          id: 'about',
+          title: 'Acerca de',
+          subtitle: 'Versión 1.0.0',
+          icon: 'ℹ️',
+          color: colors.textMuted, // ✅ Gris de tu paleta
+          onPress: () => onNavigate('about')
+        }
+      ]
     }
-    if (overlayRef.current) {
-      overlayRef.current.setNativeProps({ pointerEvents: 'auto' });
-    }
+  ];
 
-    // Animar entrada
-    Animated.parallel([
-      Animated.timing(menuAnimation, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(overlayOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      })
-    ]).start();
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    } else {
+      console.log('Logout pressed');
+    }
   };
 
-  const closeMenu = () => {
-    // Animar salida
-    Animated.parallel([
-      Animated.timing(menuAnimation, {
-        toValue: 300,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-      Animated.timing(overlayOpacity, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      })
-    ]).start(() => {
-      // Ocultar menú después de la animación
-      if (menuRef.current) {
-        menuRef.current.setNativeProps({ pointerEvents: 'none' });
-      }
-      if (overlayRef.current) {
-        overlayRef.current.setNativeProps({ pointerEvents: 'none' });
-      }
-    });
-  };
-
-  // Exponer función globalmente para acceso desde otros componentes
-  React.useImperativeHandle(React.createRef(), () => ({
-    openMenu
-  }));
-
-  // Almacenar referencia global
-  global.openSideMenu = openMenu;
+  if (!isVisible) return null;
 
   return (
-    <>
-      {/* Overlay de fondo */}
-      <Animated.View
-        ref={overlayRef}
-        style={[
-          styles.menuOverlay,
-          { opacity: overlayOpacity }
-        ]}
-        pointerEvents="none"
-      >
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          activeOpacity={1}
-          onPress={closeMenu}
-        />
-      </Animated.View>
+    <View style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 1000,
+    }}>
+      {/* Overlay */}
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+        }}
+        onPress={onClose}
+        activeOpacity={1}
+      />
 
-      {/* Menú lateral */}
-      <Animated.View
-        ref={menuRef}
-        style={[
-          styles.sideMenu,
-          { transform: [{ translateX: menuAnimation }] }
-        ]}
-        pointerEvents="none"
-      >
-        {/* Header del menú */}
-        <MenuHeader closeMenu={closeMenu} />
+      {/* Menu Panel */}
+      <View style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        width: '85%',
+        maxWidth: 320,
+        backgroundColor: colors.background,
+        shadowColor: '#000',
+        shadowOffset: { width: -2, height: 0 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 20,
+      }}>
+        <ScrollView style={{ flex: 1 }}>
+          {/* Header con usuario */}
+          <View style={{
+            paddingTop: insets.top + 20,
+            paddingHorizontal: 20,
+            paddingBottom: 30,
+            backgroundColor: colors.surface,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.border,
+          }}>
+            {/* Botón cerrar */}
+            <TouchableOpacity
+              onPress={onClose}
+              style={{
+                position: 'absolute',
+                top: insets.top + 15,
+                right: 15,
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: colors.text, fontSize: 18, fontWeight: 'bold' }}>×</Text>
+            </TouchableOpacity>
 
-        {/* Items del menú */}
-        <MenuItems closeMenu={closeMenu} />
+            {/* Avatar y datos del usuario */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+              <View style={{
+                width: 60,
+                height: 60,
+                borderRadius: 30,
+                backgroundColor: colors.accent,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 15,
+              }}>
+                <Text style={{
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                  color: colors.primary,
+                }}>
+                  👤
+                </Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{
+                  color: colors.text,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  marginBottom: 4,
+                }}>
+                  Usuario
+                </Text>
+                <Text style={{
+                  color: colors.textSecondary,
+                  fontSize: 14,
+                }}>
+                  user@liga.cl
+                </Text>
+              </View>
+            </View>
+          </View>
 
-        {/* Footer del menú */}
-        <MenuFooter />
-      </Animated.View>
-    </>
+          {/* Secciones del menú */}
+          <View style={{ paddingVertical: 20 }}>
+            {menuSections.map((section, sectionIndex) => (
+              <View key={section.title} style={{ marginBottom: 30 }}>
+                {/* Título de sección */}
+                <Text style={{
+                  color: colors.textMuted,
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  letterSpacing: 1,
+                  paddingHorizontal: 20,
+                  marginBottom: 15,
+                }}>
+                  {section.title}
+                </Text>
+
+                {/* Items de la sección */}
+                {section.items.map((item, itemIndex) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={item.onPress}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: 20,
+                      paddingVertical: 16,
+                      borderRadius: 0,
+                      marginHorizontal: 10,
+                      backgroundColor: 'transparent',
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    {/* Icono */}
+                    <View style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 22,
+                      backgroundColor: `${item.color}20`,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: 16,
+                    }}>
+                      <Text style={{ fontSize: 20 }}>
+                        {item.icon}
+                      </Text>
+                    </View>
+
+                    {/* Contenido */}
+                    <View style={{ flex: 1 }}>
+                      <Text style={{
+                        color: colors.text,
+                        fontSize: 16,
+                        fontWeight: '600',
+                        marginBottom: 2,
+                      }}>
+                        {item.title}
+                      </Text>
+                      <Text style={{
+                        color: colors.textSecondary,
+                        fontSize: 13,
+                      }}>
+                        {item.subtitle}
+                      </Text>
+                    </View>
+
+                    {/* Badge y flecha */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      {item.badge && (
+                        <View style={{
+                          backgroundColor: item.color,
+                          paddingHorizontal: 8,
+                          paddingVertical: 4,
+                          borderRadius: 12,
+                          marginRight: 12,
+                        }}>
+                          <Text style={{
+                            color: colors.text,
+                            fontSize: 12,
+                            fontWeight: 'bold',
+                          }}>
+                            {item.badge}
+                          </Text>
+                        </View>
+                      )}
+                      <Text style={{
+                        color: colors.textMuted,
+                        fontSize: 16,
+                      }}>
+                        ›
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+
+        {/* Footer con logout */}
+        <View style={{
+          padding: 20,
+          paddingBottom: insets.bottom + 20,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        }}>
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 14,
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: 'rgba(244, 67, 54, 0.3)',
+              backgroundColor: 'rgba(244, 67, 54, 0.1)',
+            }}
+          >
+            <Text style={{ fontSize: 18, marginRight: 8 }}>🚪</Text>
+            <Text style={{
+              color: '#F44336',
+              fontSize: 16,
+              fontWeight: '600',
+            }}>
+              Cerrar Sesión
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 };
 

@@ -1,7 +1,9 @@
-// App.js - Aplicación principal
+// App.js - CON SIDEMENU CORREGIDO
 import * as Font from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, SafeAreaView, StatusBar } from 'react-native';
+import { Animated } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 // Pantallas
 import CompetitionScreen from './screens/CompetitionScreen';
@@ -14,7 +16,6 @@ import LoadingScreen from './components/common/LoadingScreen';
 import SideMenu from './components/common/SideMenu';
 
 // Constantes y estilos
-import { colors } from './constants/colors';
 import { styles } from './styles/styles';
 
 export default function App() {
@@ -27,6 +28,9 @@ export default function App() {
   const [selectedCompetition, setSelectedCompetition] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [selectedTab, setSelectedTab] = useState('fixture');
+
+  // ✅ NUEVO: Estado del menú lateral
+  const [menuVisible, setMenuVisible] = useState(false);
 
   // ========================================
   // REFERENCIAS ANIMADAS
@@ -51,6 +55,58 @@ export default function App() {
       console.error('Error loading font:', error);
       setFontLoaded(true);
     }
+  };
+
+  // ========================================
+  // FUNCIONES DEL MENÚ LATERAL
+  // ========================================
+
+  // ✅ NUEVO: Funciones para controlar el menú
+  const openMenu = () => {
+    setMenuVisible(true);
+  };
+
+  const closeMenu = () => {
+    setMenuVisible(false);
+  };
+
+  // Manejo de navegación desde el menú
+  const handleMenuNavigation = (menuItem) => {
+    console.log(`Navegando a: ${menuItem}`);
+
+    // ✅ Cerrar menú al navegar
+    closeMenu();
+
+    switch (menuItem) {
+      case 'live':
+        // Navegar a partidos en vivo
+        break;
+      case 'favorites':
+        // Navegar a favoritos
+        break;
+      case 'notifications':
+        // Navegar a notificaciones
+        break;
+      case 'settings':
+        // Navegar a configuración
+        break;
+      case 'help':
+        // Navegar a ayuda
+        break;
+      case 'about':
+        // Navegar a acerca de
+        break;
+      default:
+        console.log('Item de menú no reconocido');
+    }
+  };
+
+  // Manejo de logout
+  const handleLogout = () => {
+    console.log('Cerrando sesión...');
+    closeMenu(); // ✅ Cerrar menú
+    // Aquí puedes agregar la lógica de logout
+    navigateToHome();
   };
 
   // ========================================
@@ -105,46 +161,6 @@ export default function App() {
   };
 
   // ========================================
-  // FUNCIONES DEL MENÚ LATERAL
-  // ========================================
-
-  // Manejo de navegación desde el menú
-  const handleMenuNavigation = (menuItem) => {
-    console.log(`Navegando a: ${menuItem}`);
-
-    switch (menuItem) {
-      case 'live':
-        // Navegar a partidos en vivo
-        break;
-      case 'favorites':
-        // Navegar a favoritos
-        break;
-      case 'notifications':
-        // Navegar a notificaciones
-        break;
-      case 'settings':
-        // Navegar a configuración
-        break;
-      case 'help':
-        // Navegar a ayuda
-        break;
-      case 'about':
-        // Navegar a acerca de
-        break;
-      default:
-        console.log('Item de menú no reconocido');
-    }
-  };
-
-  // Manejo de logout
-  const handleLogout = () => {
-    console.log('Cerrando sesión...');
-    // Aquí puedes agregar la lógica de logout
-    // Por ejemplo: limpiar AsyncStorage, resetear estados, etc.
-    navigateToHome();
-  };
-
-  // ========================================
   // RENDERIZADO DE PANTALLAS
   // ========================================
   const renderCurrentScreen = () => {
@@ -153,6 +169,7 @@ export default function App() {
       navigateToHome,
       selectedTab,
       setSelectedTab,
+      onMenuPress: openMenu, // ✅ NUEVO: Pasar función para abrir menú
     };
 
     switch (currentScreen) {
@@ -164,6 +181,7 @@ export default function App() {
             navigateToCompetition={navigateToCompetition}
             setSelectedRegion={navigateToRegion}
             setCurrentScreen={setCurrentScreen}
+            onMenuPress={openMenu} // ✅ NUEVO: Pasar función para abrir menú
           />
         );
 
@@ -203,6 +221,7 @@ export default function App() {
             navigateToCompetition={navigateToCompetition}
             setSelectedRegion={navigateToRegion}
             setCurrentScreen={setCurrentScreen}
+            onMenuPress={openMenu} // ✅ NUEVO: Pasar función para abrir menú
           />
         );
     }
@@ -218,77 +237,26 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-
-      {/* Contenido principal - Pantalla activa */}
-      {renderCurrentScreen()}
-
-      {/* Menú lateral - Siempre presente */}
-      <SideMenu
-        onNavigate={handleMenuNavigation}
-        onLogout={handleLogout}
+    <SafeAreaProvider>
+      {/* StatusBar corregido para Android */}
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
       />
-    </SafeAreaView>
+
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        {/* Contenido principal - Pantalla activa */}
+        {renderCurrentScreen()}
+
+        {/* ✅ CORREGIDO: Menú lateral con props necesarias */}
+        <SideMenu
+          isVisible={menuVisible}
+          onClose={closeMenu}
+          onNavigate={handleMenuNavigation}
+          onLogout={handleLogout}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
-
-// ========================================
-// INFORMACIÓN DE LA APP
-// ========================================
-
-/*
-ESTRUCTURA DE LA APLICACIÓN:
-
-📱 App.js (Principal)
-├── 🎬 HomeScreen
-│   ├── MainHeader
-│   ├── MainSlider
-│   ├── CompetenciasSlider
-│   ├── RegionesSlider
-│   ├── NoticiasSection
-│   └── SponsorsSection
-├── ⚽ CompetitionScreen
-│   ├── DynamicHeader
-│   ├── CompetitionBanner
-│   └── SubcategoriasList
-├── 🎯 SubcategoryScreen
-│   ├── DynamicHeader
-│   ├── SubcategoryBanner
-│   ├── TabNavigation
-│   ├── TabContent
-│   ├── DetailCard
-│   └── ActionButtons
-├── 🌍 RegionScreen
-│   ├── RegionHeader
-│   ├── RegionSlider
-│   ├── LigasList
-│   ├── TabNavigation
-│   └── TabContent
-└── 🎛️ SideMenu
-    ├── MenuHeader
-    ├── MenuItems
-    └── MenuFooter
-
-NAVEGACIÓN:
-Home → Competition → Subcategory
-Home → Region
-Menu → Various sections
-
-ESTADO GLOBAL:
-- currentScreen: Pantalla activa
-- selectedRegion: Región seleccionada
-- selectedCompetition: Competencia seleccionada
-- selectedSubcategory: Subcategoría seleccionada
-- selectedTab: Pestaña activa en tabs
-- fontLoaded: Estado de carga de fuentes
-
-CARACTERÍSTICAS:
-✅ Navegación fluida entre pantallas
-✅ Menú lateral con animaciones
-✅ Sistema de tabs reutilizable
-✅ Componentes modulares
-✅ Estilos centralizados
-✅ Manejo de estado limpio
-✅ Performance optimizada
-*/

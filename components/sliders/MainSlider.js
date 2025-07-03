@@ -1,8 +1,8 @@
-// components/sliders/MainSlider.js
+// components/sliders/MainSlider.js - CORREGIDO PARA ANDROID
 import { Feather } from '@expo/vector-icons';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, FlatList, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../constants/colors';
 import { sliderData } from '../../data/mockData';
 import { styles } from '../../styles/styles';
@@ -25,6 +25,12 @@ const SlideItem = ({ item, isActive, slideIndex }) => {
         pl.loop = true;
         playerRef.current = pl;
         setPlayerReady(true);
+
+        // ✅ CONFIGURACIÓN ESPECÍFICA PARA ANDROID
+        if (Platform.OS === 'android') {
+          pl.showNowPlayingNotification = false;
+          pl.audioMixingMode = 'mixWithOthers';
+        }
 
         if (isLocalVideo && isActive) {
           if (lastPosition.current > 0) {
@@ -68,13 +74,38 @@ const SlideItem = ({ item, isActive, slideIndex }) => {
           <VideoView
             style={styles.video}
             player={player}
-            allowsFullscreen
-            allowsPictureInPicture
             contentFit="cover"
-            resizeMode="cover"
+            // ✅ CONFIGURACIÓN CRÍTICA PARA ANDROID
+            nativeControls={false}
+            allowsFullscreen={false}
+            allowsPictureInPicture={false}
+            showsTimecodes={false}
+            requiresLinearPlayback={false}
+            // ✅ PROPS ESPECÍFICAS PARA ANDROID
+            {...(Platform.OS === 'android' && {
+              useNativeControls: false,
+              showsPlaybackControls: false,
+              controlsStyle: 'none',
+              hideControlsTimerDuration: 0,
+            })}
           />
+
+          {/* ✅ OVERLAY TRANSPARENTE PARA BLOQUEAR CONTROLES */}
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'transparent',
+              zIndex: 1,
+            }}
+            pointerEvents="box-none"
+          />
+
           <TouchableOpacity
-            style={styles.muteButton}
+            style={[styles.muteButton, { zIndex: 2 }]} // ✅ zIndex mayor
             onPress={() => setIsMuted((prev) => !prev)}
           >
             <Feather
@@ -83,6 +114,7 @@ const SlideItem = ({ item, isActive, slideIndex }) => {
               color="white"
             />
           </TouchableOpacity>
+
           <View style={styles.videoOverlay} />
         </View>
       </View>

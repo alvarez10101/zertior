@@ -1,12 +1,307 @@
-// styles/styles.js
-import { Dimensions, StyleSheet } from 'react-native';
+// styles/styles.js - CORRECCIÓN PARA ANDROID
+import { Dimensions, Platform, StyleSheet } from 'react-native'; // ✅ Agregar Platform
 import { colors } from '../constants/colors';
 
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   // ========================================
-  // ESTILOS GENERALES
+  // TÍTULOS Y TEXTOS - CORREGIDOS PARA ANDROID
+  // ========================================
+  sectionTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 15,
+    // ✅ CORREGIR PADDING EN ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false, // ✅ Quita padding extra de Android
+        textAlignVertical: 'center', // ✅ Centrado vertical
+      },
+    }),
+  },
+
+  headerTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    flex: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    textAlign: 'center',
+    marginHorizontal: 10,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  slideTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 10,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  subtitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 16,
+    color: colors.text,
+    marginBottom: 10,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  liveText: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.text,
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 6,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  regionName: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.text,
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 5,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  regionTeams: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.textMuted,
+    fontSize: 12,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  noticiaTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.text,
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 5,
+    marginLeft: 10,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  noticiaTime: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.textMuted,
+    fontSize: 12,
+    marginLeft: 10,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  competitionTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 5,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  competitionDescription: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 14,
+    color: colors.textMuted,
+    marginBottom: 5,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  competitionStats: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 12,
+    color: colors.accent,
+    fontWeight: '600',
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  subcategoryName: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 5,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  subcategoryParticipants: {
+    fontFamily: 'DAZNOscine-Bold',
+    fontSize: 14,
+    color: colors.textMuted,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  // ✅ AGREGAR ESTILOS PARA TABS
+  tabText: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.textMuted,
+    fontSize: 12,
+    fontWeight: '600',
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  activeTabText: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: '#000',
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  // ✅ AGREGAR ESTILOS PARA MENÚ
+  menuUserName: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.text,
+    fontSize: 16,
+    fontWeight: 'bold',
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  menuUserEmail: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.textMuted,
+    fontSize: 12,
+    marginTop: 2,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  menuItemTitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.text,
+    fontSize: 14,
+    fontWeight: '600',
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  menuItemSubtitle: {
+    fontFamily: 'DAZNOscine-Bold',
+    color: colors.textMuted,
+    fontSize: 12,
+    marginTop: 2,
+    // ✅ CORREGIR PARA ANDROID
+    ...Platform.select({
+      android: {
+        includeFontPadding: false,
+        textAlignVertical: 'center',
+      },
+    }),
+  },
+
+  // ... (mantén todos los otros estilos iguales)
+
+  // ========================================
+  // ESTILOS GENERALES (sin cambios)
   // ========================================
   safeArea: {
     flex: 1,

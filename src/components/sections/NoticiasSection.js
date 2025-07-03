@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../constants/colors';
 
 const NoticiasSection = () => {
@@ -18,18 +17,18 @@ const NoticiasSection = () => {
 
   return (
     <View style={{ padding: 20 }}>
-      <Text style={{ 
-        fontFamily: 'DAZNOscine-Bold', 
-        fontSize: 20, 
-        color: colors.text, 
-        marginBottom: 15, 
-        fontWeight: 'bold' 
+      <Text style={{
+        fontFamily: 'DAZNOscine-Bold',
+        fontSize: 20,
+        color: colors.text,
+        marginBottom: 15,
+        fontWeight: 'bold'
       }}>
-        Últimas Noticias
+        Noticias
       </Text>
       {noticias.map((noticia) => (
-        <TouchableOpacity 
-          key={noticia.id} 
+        <TouchableOpacity
+          key={noticia.id}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/styles';
 
 const CompetitionScreen = ({ selectedItem, navigateToHome }) => {
@@ -14,7 +13,7 @@ const CompetitionScreen = ({ selectedItem, navigateToHome }) => {
         </Text>
         <Text style={styles.subtitle}>Subcategorías disponibles</Text>
       </View>
-      
+
       <View style={styles.section}>
         <View style={styles.competitionCard}>
           <Text style={styles.competitionIcon}>⚽</Text>

@@ -1,4 +1,4 @@
-// components/common/MenuToggle.js
+// components/common/MenuToggle.js - Volver al original
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, TouchableOpacity } from 'react-native';
 import { colors } from '../../constants/colors';
