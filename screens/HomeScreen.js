@@ -1,6 +1,6 @@
 // screens/HomeScreen.js - DEBUG SIMPLE
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Animated, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, RefreshControl, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import MainHeader from '../components/common/MainHeader';
@@ -35,8 +35,8 @@ const HomeScreen = ({
 
   // ✅ FUNCIONES LOCALES PARA DEBUG
   const testOpenMenu = () => {
-    console.log('🔥 TEST: Abriendo menú local');
-    Alert.alert('DEBUG', 'Función testOpenMenu ejecutada');
+    //console.log('🔥 TEST: Abriendo menú local');
+    //Alert.alert('DEBUG', 'Función testOpenMenu ejecutada');
     setLocalMenuVisible(true);
   };
 
@@ -83,27 +83,10 @@ const HomeScreen = ({
     return (
       <View style={{ flex: 1, backgroundColor: '#1A1F2E' }}>
         {/* ✅ BOTÓN DE PRUEBA EN LOADING */}
-        <View style={{
-          position: 'absolute',
-          top: 100,
-          right: 20,
-          zIndex: 9999,
-        }}>
-          <TouchableOpacity
-            onPress={testOpenMenu}
-            style={{
-              backgroundColor: 'red',
-              padding: 10,
-              borderRadius: 5,
-            }}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>
-              TEST MENÚ
-            </Text>
-          </TouchableOpacity>
-        </View>
 
-        <MainHeader scrollY={scrollY} onMenuPress={onMenuPress} />
+
+        <MainHeader scrollY={scrollY} onMenuPress={testOpenMenu} />
+
         <Animated.ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{
@@ -124,27 +107,10 @@ const HomeScreen = ({
   return (
     <View style={{ flex: 1 }}>
       {/* ✅ BOTÓN DE PRUEBA VISIBLE */}
-      <View style={{
-        position: 'absolute',
-        top: 100,
-        right: 20,
-        zIndex: 9999,
-      }}>
-        <TouchableOpacity
-          onPress={testOpenMenu}
-          style={{
-            backgroundColor: 'red',
-            padding: 10,
-            borderRadius: 5,
-          }}
-        >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            TEST MENÚ
-          </Text>
-        </TouchableOpacity>
-      </View>
 
-      <MainHeader scrollY={scrollY} onMenuPress={onMenuPress} />
+
+      <MainHeader scrollY={scrollY} onMenuPress={testOpenMenu} />
+
 
       {/* Indicador custom unificado */}
       {refreshing && (

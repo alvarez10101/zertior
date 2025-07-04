@@ -1,21 +1,21 @@
-// components/common/SkeletonLoader.js - LIMPIO Y CORRECTO
-import { useEffect, useRef } from 'react';
+// components/common/SkeletonLoader.js
+import * as React from 'react';
 import { Animated, View } from 'react-native';
 
-const SkeletonLoader = ({
-    height = 20,
+// Componente base para skeletons
+const SkeletonItem = ({
     width = '100%',
-    borderRadius = 8,
-    style,
+    height = 20,
+    style = {},
     backgroundColor = 'rgba(255,255,255,0.1)'
 }) => {
-    const opacity = useRef(new Animated.Value(0.3)).current;
+    const opacity = React.useRef(new Animated.Value(0.3)).current;
 
-    useEffect(() => {
-        const animate = () => {
+    React.useEffect(() => {
+        const animateOpacity = () => {
             Animated.sequence([
                 Animated.timing(opacity, {
-                    toValue: 0.7,
+                    toValue: 1,
                     duration: 800,
                     useNativeDriver: true,
                 }),
@@ -24,19 +24,20 @@ const SkeletonLoader = ({
                     duration: 800,
                     useNativeDriver: true,
                 }),
-            ]).start(() => animate());
+            ]).start(() => animateOpacity());
         };
-        animate();
-    }, []);
+
+        animateOpacity();
+    }, [opacity]);
 
     return (
         <Animated.View
             style={[
                 {
-                    height,
                     width,
+                    height,
                     backgroundColor,
-                    borderRadius,
+                    borderRadius: 4,
                     opacity,
                 },
                 style,
@@ -45,142 +46,73 @@ const SkeletonLoader = ({
     );
 };
 
-// Skeleton para tarjetas de competencias
-export const CompetenciasSkeleton = () => (
-    <View style={{ padding: 16 }}>
-        {/* Título de sección */}
-        <SkeletonLoader
-            height={28}
-            width="40%"
-            style={{ marginBottom: 16 }}
-        />
+// Skeleton para el slider principal
+export const SliderSkeleton = () => (
+    <View style={{ padding: 20 }}>
+        <SkeletonItem width="100%" height={200} style={{ borderRadius: 10, marginBottom: 15 }} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            {[1, 2, 3].map((_, index) => (
+                <SkeletonItem
+                    key={index}
+                    width={8}
+                    height={8}
+                    style={{
+                        borderRadius: 4,
+                        marginHorizontal: 4,
+                        backgroundColor: 'rgba(255, 215, 0, 0.3)'
+                    }}
+                />
+            ))}
+        </View>
+    </View>
+);
 
-        {/* Grid de competencias */}
-        <View style={{ flexDirection: 'row', gap: 12 }}>
-            {[1, 2, 3].map(i => (
-                <View key={i} style={{ flex: 1 }}>
-                    {/* Card principal */}
-                    <SkeletonLoader
-                        height={140}
-                        borderRadius={12}
-                        style={{ marginBottom: 12 }}
-                    />
-                    {/* Título */}
-                    <SkeletonLoader
-                        height={18}
-                        width="85%"
-                        style={{ marginBottom: 8 }}
-                    />
-                    {/* Subtítulo */}
-                    <SkeletonLoader
-                        height={14}
-                        width="65%"
-                    />
+// Skeleton para competencias
+export const CompetenciasSkeleton = () => (
+    <View style={{ padding: 20 }}>
+        <SkeletonItem width={180} height={24} style={{ marginBottom: 15 }} />
+        <View style={{ flexDirection: 'row' }}>
+            {[1, 2].map((_, index) => (
+                <View key={index} style={{ marginRight: 15 }}>
+                    <SkeletonItem width={150} height={100} style={{ borderRadius: 8, marginBottom: 8 }} />
+                    <SkeletonItem width={120} height={16} style={{ marginBottom: 4 }} />
+                    <SkeletonItem width={80} height={12} />
                 </View>
             ))}
         </View>
     </View>
 );
 
-// Skeleton para lista de noticias
-export const NoticiasSkeleton = () => (
-    <View style={{ padding: 16 }}>
-        {/* Título de sección */}
-        <SkeletonLoader
-            height={28}
-            width="35%"
-            style={{ marginBottom: 16 }}
-        />
+// Skeleton para regiones
+export const RegionesSkeleton = () => (
+    <View style={{ padding: 20 }}>
+        <SkeletonItem width={120} height={24} style={{ marginBottom: 15 }} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            {[1, 2, 3].map((_, index) => (
+                <View key={index} style={{ alignItems: 'center' }}>
+                    <SkeletonItem width={80} height={60} style={{ borderRadius: 8, marginBottom: 8 }} />
+                    <SkeletonItem width={60} height={14} />
+                </View>
+            ))}
+        </View>
+    </View>
+);
 
-        {/* Lista de noticias */}
-        {[1, 2, 3].map(i => (
-            <View key={i} style={{
-                flexDirection: 'row',
-                marginBottom: 16,
-                gap: 12,
-                alignItems: 'center'
-            }}>
-                {/* Imagen */}
-                <SkeletonLoader
-                    height={60}
-                    width={60}
-                    borderRadius={8}
-                />
-                {/* Contenido */}
+// Skeleton para noticias
+export const NoticiasSkeleton = () => (
+    <View style={{ padding: 20 }}>
+        <SkeletonItem width={140} height={24} style={{ marginBottom: 15 }} />
+        {[1, 2, 3].map((_, index) => (
+            <View key={index} style={{ flexDirection: 'row', marginBottom: 15 }}>
+                <SkeletonItem width={80} height={60} style={{ borderRadius: 8, marginRight: 15 }} />
                 <View style={{ flex: 1 }}>
-                    {/* Título noticia */}
-                    <SkeletonLoader
-                        height={16}
-                        width="90%"
-                        style={{ marginBottom: 8 }}
-                    />
-                    {/* Tiempo */}
-                    <SkeletonLoader
-                        height={12}
-                        width="30%"
-                    />
+                    <SkeletonItem width="90%" height={16} style={{ marginBottom: 8 }} />
+                    <SkeletonItem width="70%" height={14} style={{ marginBottom: 4 }} />
+                    <SkeletonItem width="50%" height={12} />
                 </View>
             </View>
         ))}
     </View>
 );
 
-// Skeleton para regiones
-export const RegionesSkeleton = () => (
-    <View style={{ padding: 16 }}>
-        {/* Título de sección */}
-        <SkeletonLoader
-            height={28}
-            width="30%"
-            style={{ marginBottom: 16 }}
-        />
-
-        {/* Grid de regiones */}
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
-            {[1, 2, 3, 4].map(i => (
-                <View key={i} style={{
-                    width: '47%', // Dos columnas
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    borderRadius: 12,
-                    padding: 16
-                }}>
-                    {/* Nombre región */}
-                    <SkeletonLoader
-                        height={18}
-                        width="80%"
-                        style={{ marginBottom: 8 }}
-                    />
-                    {/* Equipos */}
-                    <SkeletonLoader
-                        height={14}
-                        width="50%"
-                    />
-                </View>
-            ))}
-        </View>
-    </View>
-);
-
-// Skeleton para el slider principal
-export const SliderSkeleton = () => (
-    <View style={{
-        height: 250,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        margin: 16,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }}>
-        <SkeletonLoader
-            height={40}
-            width="60%"
-            style={{ marginBottom: 12 }}
-        />
-        <SkeletonLoader
-            height={20}
-            width="40%"
-        />
-    </View>
-);
-
-export default SkeletonLoader;
+export default SkeletonItem;

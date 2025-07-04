@@ -3,7 +3,7 @@ import { Animated, Image, View } from 'react-native';
 import { styles } from '../../styles/styles';
 import MenuToggle from './MenuToggle';
 
-const MainHeader = ({ scrollY }) => {
+const MainHeader = ({ scrollY, onMenuPress }) => {
   const headerBackground = scrollY.interpolate({
     inputRange: [0, 100],
     outputRange: [`rgba(26,54,93,1)`, `rgba(26,54,93,0.5)`],
@@ -31,7 +31,7 @@ const MainHeader = ({ scrollY }) => {
           resizeMode="contain"
         />
       </View>
-      <MenuToggle />
+      <MenuToggle onPress={onMenuPress} />
     </Animated.View>
   );
 };

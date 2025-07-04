@@ -1,0 +1,14 @@
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+
+const TestComponent = () => {
+  const [test, setTest] = useState('Test funciona');
+  
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1A1F2E' }}>
+      <Text style={{ color: 'white', fontSize: 20 }}>{test}</Text>
+    </View>
+  );
+};
+
+export default TestComponent;

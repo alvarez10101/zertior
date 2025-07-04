@@ -1,7 +1,10 @@
 // components/sections/NoticiasSection.js - IMÁGENES RESPONSIVAS PARA CUALQUIER TAMAÑO
-import { useState } from 'react';
+import * as React from 'react';
 import { ActivityIndicator, Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../styles/styles';
+
+// Forzar uso de React para evitar que se elimine el import
+const { useState } = React;
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -75,17 +78,30 @@ const NoticiasSection = ({ noticias = noticiasExample, onNoticiaPress }) => {
   const imageSize = getImageSize();
 
   const handleImageLoadStart = (noticiaId) => {
+    console.log('🔄 Imagen iniciando carga:', noticiaId);
+
     setImageLoadingStates(prev => ({ ...prev, [noticiaId]: true }));
   };
 
   const handleImageLoadEnd = (noticiaId) => {
-    setImageLoadingStates(prev => ({ ...prev, [noticiaId]: false }));
+    console.log('✅ Imagen cargada exitosamente:', noticiaId);
+
+
+    // Usar setTimeout para asegurar que se ejecute después de onLoadStart
+    setTimeout(() => {
+      setImageLoadingStates(prev => ({ ...prev, [noticiaId]: false }));
+    }, 100); // 100ms de delay
   };
 
   const handleImageError = (noticiaId) => {
+    console.log('❌ Error cargando imagen:', noticiaId);
+
     setImageErrorStates(prev => ({ ...prev, [noticiaId]: true }));
     setImageLoadingStates(prev => ({ ...prev, [noticiaId]: false }));
   };
+
+  console.log('Estados de loading:', imageLoadingStates);
+  console.log('Estados de error:', imageErrorStates);
 
   const handleNoticiaPress = (noticia) => {
     if (onNoticiaPress) {
@@ -149,7 +165,7 @@ const NoticiasSection = ({ noticias = noticiasExample, onNoticiaPress }) => {
                       resizeMode: 'cover', // ✅ Cubre todo el espacio, recorta si es necesario
                     }}
                     onLoadStart={() => handleImageLoadStart(noticia.id)}
-                    onLoadEnd={() => handleImageLoadEnd(noticia.id)}
+                    onLoad={() => handleImageLoadEnd(noticia.id)}
                     onError={() => handleImageError(noticia.id)}
                   />
                   {/* Loading indicator */}
