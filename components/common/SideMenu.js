@@ -1,4 +1,5 @@
-// components/common/SideMenu.js - CON TUS COLORES DEFINIDOS
+// components/common/SideMenu.js - CON ICONOS VECTORIALES MONOCROMÁTICOS
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../constants/colors';
@@ -6,7 +7,7 @@ import { colors } from '../../constants/colors';
 const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
   const insets = useSafeAreaInsets();
 
-  // ✅ Configuración de menú con TUS COLORES CONSISTENTES
+  // ✅ Configuración de menú con ICONOS VECTORIALES MONOCROMÁTICOS
   const menuSections = [
     {
       title: "Principal",
@@ -15,7 +16,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'live',
           title: 'Partidos EN VIVO',
           subtitle: '3 partidos activos',
-          icon: '🔴',
+          icon: 'circle',
           color: colors.live, // ✅ Rojo de tu paleta
           badge: '3',
           onPress: () => onNavigate('live')
@@ -24,7 +25,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'favorites',
           title: 'Mis Favoritos',
           subtitle: 'Equipos seguidos',
-          icon: '⭐',
+          icon: 'star-outline',
           color: colors.accent, // ✅ Dorado de tu paleta
           onPress: () => onNavigate('favorites')
         }
@@ -37,7 +38,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'notifications',
           title: 'Notificaciones',
           subtitle: '5 nuevas',
-          icon: '🔔',
+          icon: 'bell-outline',
           color: colors.accent, // ✅ Dorado de tu paleta
           badge: '5',
           onPress: () => onNavigate('notifications')
@@ -46,7 +47,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'settings',
           title: 'Configuración',
           subtitle: 'Ajustes de la app',
-          icon: '⚙️',
+          icon: 'cog-outline',
           color: colors.textMuted, // ✅ Gris de tu paleta
           onPress: () => onNavigate('settings')
         }
@@ -59,7 +60,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'help',
           title: 'Ayuda',
           subtitle: 'Soporte técnico',
-          icon: '❓',
+          icon: 'help-circle-outline',
           color: colors.textMuted, // ✅ Gris de tu paleta
           onPress: () => onNavigate('help')
         },
@@ -67,7 +68,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
           id: 'about',
           title: 'Acerca de',
           subtitle: 'Versión 1.0.0',
-          icon: 'ℹ️',
+          icon: 'information-outline',
           color: colors.textMuted, // ✅ Gris de tu paleta
           onPress: () => onNavigate('about')
         }
@@ -148,7 +149,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: colors.text, fontSize: 18, fontWeight: 'bold' }}>×</Text>
+              <MaterialCommunityIcons name="close" size={20} color="#FFFFFF" />
             </TouchableOpacity>
 
             {/* Avatar y datos del usuario */}
@@ -162,13 +163,11 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
                 alignItems: 'center',
                 marginRight: 15,
               }}>
-                <Text style={{
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                  color: colors.primary,
-                }}>
-                  👤
-                </Text>
+                <MaterialCommunityIcons
+                  name="account-outline"
+                  size={28}
+                  color="#FFFFFF"
+                />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{
@@ -222,7 +221,7 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
                     }}
                     activeOpacity={0.7}
                   >
-                    {/* Icono */}
+                    {/* Icono vectorial */}
                     <View style={{
                       width: 44,
                       height: 44,
@@ -232,9 +231,11 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
                       alignItems: 'center',
                       marginRight: 16,
                     }}>
-                      <Text style={{ fontSize: 20 }}>
-                        {item.icon}
-                      </Text>
+                      <MaterialCommunityIcons
+                        name={item.icon}
+                        size={20}
+                        color="#FFFFFF"
+                      />
                     </View>
 
                     {/* Contenido */}
@@ -274,12 +275,11 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
                           </Text>
                         </View>
                       )}
-                      <Text style={{
-                        color: colors.textMuted,
-                        fontSize: 16,
-                      }}>
-                        ›
-                      </Text>
+                      <MaterialCommunityIcons
+                        name="chevron-right"
+                        size={16}
+                        color="#FFFFFF"
+                      />
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -308,7 +308,12 @@ const SideMenu = ({ isVisible, onClose, onNavigate, onLogout }) => {
               backgroundColor: 'rgba(244, 67, 54, 0.1)',
             }}
           >
-            <Text style={{ fontSize: 18, marginRight: 8 }}>🚪</Text>
+            <MaterialCommunityIcons
+              name="logout"
+              size={18}
+              color="#F44336"
+              style={{ marginRight: 8 }}
+            />
             <Text style={{
               color: '#F44336',
               fontSize: 16,
